@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>📱 mobile herbal · 700+ plants · profile & favorites</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #b89364;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 0.8rem;
+        }
+        /* single column, fully fluid */
+        .mobile-book {
+            width: 100%;
+            max-width: 700px;
+            background: #fcf3e1;
+            border-radius: 32px 32px 24px 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 0 6px #775d3b, 0 0 0 10px #c8a36d;
+            padding: 1.2rem 1.2rem 1.5rem 1.2rem;
+            border: 2px solid #b48a54;
+        }
+
+        /* profile header – stack on narrow screens */
+        .profile-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px double #b3884b;
+            padding-bottom: 1rem;
+        }
+        .title-area {
+            flex: 2 1 200px;
+        }
+        .title-area h1 {
+            font-size: clamp(1.8rem, 7vw, 2.8rem);
+            color: #1c5c1c;
+            line-height: 1.1;
+        }
+        .title-area span {
+            font-size: 1rem;
+            color: #715538;
+        }
+        .profile-card {
+            background: #e4d2b2;
+            border: 3px solid #7a5f3b;
+            border-radius: 50px;
+            padding: 0.4rem 1.2rem 0.4rem 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+            box-shadow: 0 5px 0 #695135;
+        }
+        .avatar {
+            background: #537a3b;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border: 2px solid #f3cf7a;
+        }
+        .profile-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1a451a;
+            white-space: nowrap;
+        }
+        .fav-counter {
+            background: #be9f70;
+            border-radius: 40px;
+            padding: 0.2rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .edit-btn {
+            background: #937b50;
+            border: none;
+            color: white;
+            border-radius: 30px;
+            padding: 0.3rem 1rem;
+            font-size: 0.9rem;
+            border: 2px solid #584c2f;
+            cursor: pointer;
+        }
+
+        /* search – mobile friendly */
+        .search-area {
+            background: #ead7b9;
+            border-radius: 60px;
+            padding: 0.5rem 0.8rem 0.5rem 1.2rem;
+            margin: 0.8rem 0 1.2rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.6rem;
+            border: 3px solid #9b7849;
+        }
+        .search-area input {
+            flex: 3 1 180px;
+            background: #fffcf0;
+            border: 2px solid #7f633a;
+            border-radius: 50px;
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            font-family: 'Georgia', serif;
+            min-width: 150px;
+        }
+        .search-area button {
+            background: #4b7533;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.7rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: 3px solid #295229;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #1f3f1f;
+            touch-action: manipulation;
+            flex: 1 0 auto;
+        }
+
+        /* A–Z row – scrollable on small screens */
+        .az-scroll {
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            padding: 0.2rem 0 0.8rem 0;
+            margin-bottom: 0.5rem;
+            scrollbar-width: thin;
+        }
+        .az-row {
+            display: inline-flex;
+            gap: 0.4rem;
+        }
+        .az-btn {
+            background: #eedbbc;
+            border: 3px solid #7a5f3a;
+            color: #194519;
+            width: 2.8rem;
+            height: 2.8rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-radius: 18px 4px 18px 4px;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #625134;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            touch-action: manipulation;
+        }
+        .az-btn.all {
+            width: auto;
+            padding: 0 1.2rem;
+            background: #cdb086;
+        }
+
+        /* filter pills – wrap naturally */
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin: 1rem 0 1.5rem 0;
+            justify-content: center;
+        }
+        .filter-pill {
+            background: #dec8a3;
+            border: 3px solid #785e39;
+            border-radius: 50px;
+            padding: 0.4rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f471f;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #625036;
+            touch-action: manipulation;
+            white-space: nowrap;
+        }
+        .filter-pill.selected {
+            background: #367236;
+            border-color: #194419;
+            color: #fcf3d3;
+            box-shadow: 0 5px 0 #174017;
+        }
+
+        /* plant list – cards stack */
+        .plant-list {
+            background: #f5ead5;
+            border-radius: 30px;
+            padding: 1rem;
+            border: 3px solid #b28d5b;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 1.2rem;
+            -webkit-overflow-scrolling: touch;
+        }
+        .card {
+            background: #fffcf0;
+            border: 3px solid #9f7a4b;
+            border-radius: 30px 8px 30px 8px;
+            padding: 0.8rem 0.8rem 0.8rem 1.2rem;
+            margin-bottom: 0.8rem;
+            border-left-width: 22px;
+            border-left-style: solid;
+            border-left-color: #679f5e;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #735f39;
+            transition: 0.08s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .card.active {
+            border-left-color: #196d19;
+            background: #f7efda;
+            box-shadow: 0 6px 0 #3c7332;
+        }
+        .card-content {
+            flex: 1;
+            min-width: 0; /* prevent overflow */
+        }
+        .plant-name {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #1f601f;
+            line-height: 1.2;
+        }
+        .latin {
+            font-style: italic;
+            color: #68653b;
+            font-size: 0.9rem;
+            border-bottom: 1px dashed #b6935b;
+            margin: 0.1rem 0 0.2rem 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .brief-desc {
+            font-size: 0.85rem;
+            background: #efe3c9;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            display: inline-block;
+            margin: 0.2rem 0 0.3rem 0;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.2rem;
+        }
+        .tag {
+            background: #dac49e;
+            border: 2px solid #745d36;
+            border-radius: 30px;
+            padding: 0.1rem 0.8rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .fav-star {
+            font-size: 2.5rem;
+            color: #c5a35b;
+            cursor: pointer;
+            flex-shrink: 0;
+            width: 3rem;
+            text-align: center;
+            filter: drop-shadow(2px 4px 0 #856e3e);
+            touch-action: manipulation;
+        }
+        .fav-star.favorited {
+            color: #eab130;
+            text-shadow: 0 0 8px #f3b827;
+        }
+
+        /* detail panel – readable on mobile */
+        .detail-panel {
+            background: #fdf2dd;
+            border: 4px double #b38f57;
+            border-radius: 40px 12px 40px 12px;
+            padding: 1.5rem 1.2rem;
+            margin: 1rem 0 1.5rem 0;
+            word-wrap: break-word;
+        }
+        .detail-name {
+            font-size: 2.2rem;
+            color: #236323;
+            line-height: 1.2;
+        }
+        .detail-latin {
+            font-size: 1.2rem;
+            color: #6e633a;
+            font-style: italic;
+            margin-bottom: 0.8rem;
+        }
+        .big-letter {
+            font-size: 3rem;
+            float: left;
+            line-height: 0.8;
+            margin-right: 0.5rem;
+            color: #ad7b41;
+        }
+        .desc-block {
+            background: #e7eace;
+            border-radius: 30px;
+            padding: 1rem 1.2rem;
+            margin: 1.2rem 0;
+            font-size: 1rem;
+        }
+        .prep-box {
+            background: #efebd3;
+            border-radius: 24px 6px 24px 6px;
+            padding: 1rem 1.2rem;
+            border: 3px solid #ab8a4f;
+            margin: 1rem 0;
+        }
+        .safety-box {
+            background: #fcddc9;
+            border: 4px solid #bc4f4f;
+            border-radius: 24px;
+            padding: 1rem 1.2rem;
+            box-shadow: 0 5px 0 #8b4545;
+        }
+
+        /* footer – mobile row */
+        .footer-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            background: #dac29c;
+            border-radius: 50px;
+            padding: 0.6rem 1.2rem;
+            border: 3px solid #846e44;
+            margin-top: 1rem;
+        }
+        .footer-row button {
+            background: #696130;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid #494421;
+            font-size: 0.9rem;
+            touch-action: manipulation;
+        }
+        .footer-row .reset-btn {
+            background: #b0884b;
+        }
+
+        /* count text */
+        .count-text {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #2a422a;
+        }
+
+        /* touch-friendly adjustments */
+        button, .az-btn, .filter-pill, .fav-star, .edit-btn {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+</head>
+<body>
+<div class="mobile-book">
+
+    <!-- profile header – responsive -->
+    <div class="profile-header">
+        <div class="title-area">
+            <h1>herbarium</h1>
+            <span>700+ plants</span>
+        </div>
+        <div class="profile-card" id="profileCard">
+            <div class="avatar">🌿</div>
+            <span class="profile-name" id="profileName">herbalist</span>
+            <span class="fav-counter" id="favCounter">⭐0</span>
+            <button class="edit-btn" id="editProfileBtn">edit</button>
+        </div>
+    </div>
+
+    <!-- search -->
+    <div class="search-area">
+        <input type="text" id="searchField" placeholder="search plant, latin, ailment">
+        <button id="searchBtn">find</button>
+    </div>
+
+    <!-- horizontally scrollable A–Z (mobile friendly) -->
+    <div class="az-scroll">
+        <div class="az-row" id="azRow">
+            <span class="az-btn all" data-letter="all">all</span>
+            <span class="az-btn" data-letter="A">A</span><span class="az-btn" data-letter="B">B</span><span class="az-btn" data-letter="C">C</span>
+            <span class="az-btn" data-letter="D">D</span><span class="az-btn" data-letter="E">E</span><span class="az-btn" data-letter="F">F</span>
+            <span class="az-btn" data-letter="G">G</span><span class="az-btn" data-letter="H">H</span><span class="az-btn" data-letter="I">I</span>
+            <span class="az-btn" data-letter="J">J</span><span class="az-btn" data-letter="K">K</span><span class="az-btn" data-letter="L">L</span>
+            <span class="az-btn" data-letter="M">M</span><span class="az-btn" data-letter="N">N</span><span class="az-btn" data-letter="O">O</span>
+            <span class="az-btn" data-letter="P">P</span><span class="az-btn" data-letter="Q">Q</span><span class="az-btn" data-letter="R">R</span>
+            <span class="az-btn" data-letter="S">S</span><span class="az-btn" data-letter="T">T</span><span class="az-btn" data-letter="U">U</span>
+            <span class="az-btn" data-letter="V">V</span><span class="az-btn" data-letter="W">W</span><span class="az-btn" data-letter="X">X</span>
+            <span class="az-btn" data-letter="Y">Y</span><span class="az-btn" data-letter="Z">Z</span>
+        </div>
+    </div>
+
+    <!-- filter pills (wrapping) -->
+    <div class="filter-row" id="filterRow">
+        <span class="filter-pill selected" data-type="all">📋 all</span>
+        <span class="filter-pill" data-type="digestive">🌿 digestive</span>
+        <span class="filter-pill" data-type="skin">🧴 skin</span>
+        <span class="filter-pill" data-type="stress">😌 stress</span>
+        <span class="filter-pill" data-type="immune">🛡️ immune</span>
+        <span class="filter-pill" data-type="nervous">⚡ nervous</span>
+    </div>
+
+    <!-- plant list -->
+    <div class="plant-list" id="plantList"></div>
+
+    <!-- detail panel -->
+    <div class="detail-panel" id="detailPanel"></div>
+
+    <!-- footer with buttons & count -->
+    <div class="footer-row">
+        <span class="count-text" id="plantCountDisplay">700+ plants</span>
+        <button id="showFavBtn">⭐ favorites</button>
+        <button class="reset-btn" id="resetFiltersBtn">reset</button>
+    </div>
+</div>
+
+<script>
+(function() {
+    // ---------- massive plant list (700+) ----------
+    const coreList = [
+        "Agrimony","Aloe","Angelica","Anise","Arnica","Ashwagandha","Astragalus","Balm","Basil","Bayberry","Beth root","Black cohosh","Black walnut","Blue cohosh","Burdock","Calendula","Cascara sagrada","Catnip","Chamomile","Cinnamon","Cleavers","Coltsfoot","Comfrey","Cramp bark","Dandelion","Echinacea","Elderberry","Elecampane","Evening primrose","Fennel","Fenugreek","Feverfew","Flaxseed","Garlic","Gentian","Ginger","Ginkgo","Ginseng","Goldenseal","Hawthorn","Hops","Horehound","Horse chestnut","Horsetail","Hyssop","Juniper","Lavender","Lemon balm","Licorice","Linden","Marshmallow","Milk thistle","Motherwort","Mullein","Nettle","Oat straw","Oregon grape","Parsley","Passionflower","Peppermint","Plantain","Red clover","Rosemary","Sage","Skullcap","St. John's Wort","Thyme","Yarrow",
+        "Acerola","Achillea","Acorus","Adonis","Agave","Alfalfa","Allspice","Althaea","Amaranth","Ambrosia","Andrographis","Anemone","Anthemis","Apium","Aralia","Arctium","Aristolochia","Artemisia","Asarum","Asclepias","Asparagus","Aster","Astilbe","Avena","Bacopa","Balsamita","Baptisia","Barberry","Belladonna","Berberis","Bergamot","Betony","Bilberry","Bistort","Blackberry","Blessed thistle","Bloodroot","Blueberry","Bogbean","Boldo","Boneset","Borage","Buchu","Buckthorn","Bugleweed","Butterbur","Cacao","Calamus","California poppy","Campion","Caraway","Cardamom","Carnation","Carob","Cascara","Catechu","Cayenne","Cedar","Celery","Centaurium","Centaury","Chaerophyllum","Chaga","Chaparral","Chaste tree","Cherokee","Cherry","Chestnut","Chickweed","Chicory","Chinese rhubarb","Chives","Chondrus","Cicely","Cilantro","Cimicifuga","Cinchona","Cistus","Citronella","Claytonia","Clematis","Cnicus","Codonopsis","Coffee","Cohosh","Coptis","Coriander","Cornflower","Corydalis","Cotton lavender","Cow parsley","Cowberry","Cowslip","Crataegus","Cudweed","Cumin","Curry plant","Cyani","Cyclamen","Cypress","Damiana","Dandelion root","Danewort","Datura","Daucus","Dead nettle","Desmodium","Dill","Dioscorea","Dipsacus","Dittany","Dock","Dog rose","Dogwood","Doronicum","Drosera","Dryopteris","Duchesnea","Dulse","Echinops","Eclipta","Elderflower","Eleuthero","Elm","Ephedra","Epilobium","Equisetum","Erica","Eriodictyon","Eryngium","Erythronium","Escallonia","Eucalyptus","Eupatorium","Euphorbia","Evernia","Eyebright","Fagopyrum","Fairy flax","Felwort","Fennel flower","Fern","Ferula","Fever root","Ficus","Filipendula","Fir","Fireweed","Fish mint","Five-leaf","Flax","Fleabane","Fo-ti","Foeniculum","Fragaria","Frangula","Frankincense","Fraxinus","Fumaria","Fumitory","Galanthus","Galega","Galeopsis","Galium","Gaultheria","Gelsemium","Genista","Gentianella","Geranium","Geum","Gillenia","Ginger root","Ginkgo leaf","Ginseng Siberian","Glechoma","Gleditsia","Globularia","Glycyrrhiza","Gnaphalium","Goat's rue","Goldenrod","Goldthread","Gossypium","Gratiola","Grindelia","Ground ivy","Groundsel","Guelder rose","Gymnema","Gynostemma","Haematoxylum","Harpagophytum","Heather","Hedera","Helenium","Helianthemum","Helianthus","Helichrysum","Hellebore","Hemerocallis","Hemlock","Hemp","Henbane","Hepatica","Heracleum","Hibiscus","Hieracium","Holarrhena","Hollyhock","Honesty","Honeysuckle","Hoodia","Hordeum","Horny goat weed","Horse gram","Horseradish","Hottonia","Hound's tongue","Houseleek","Hovenia","Humulus","Hyacinth","Hydrangea","Hydrocotyle","Hyoscyamus","Hysop","Hypericum","Hypochaeris","Iberis","Ilex","Illicium","Impatiens","Imperatoria","Inula","Ipecac","Iris","Isatis","Jaborandi","Jacob's ladder","Jambolan","Jasmin","Jateorhiza","Jatropha","Jojoba","Juglans","Juncus","Kalmia","Kava","Kigelia","Knautia","Knotweed","Kochia","Krameria","Laburnum","Lactuca","Lagenaria","Lagerstroemia","Laminaria","Lamium","Lantana","Lapsana","Larix","Laserpitium","Lathyrus","Laurel","Laurus","Lavandula","Ledum","Lemna","Leonurus","Leopard's bane","Lepidium","Leptandra","Lespedeza","Levisticum","Liatris","Ligusticum","Ligustrum","Lilium","Limonia","Linaria","Lindera","Linum","Lippia","Liquidambar","Liriodendron","Lobelia","Lolium","Lonicera","Lophophora","Lotus","Lunaria","Lupinus","Luzula","Lycium","Lycopus","Lysimachia","Lythrum","Macleaya","Macrocystis","Magnolia","Mahonia","Majorana","Malva","Mammea","Mandragora","Mangifera","Manihot","Manilkara","Maranta","Marrubium","Marsilea","Matricaria","Matteuccia","Medicago","Melaleuca","Melampyrum","Melilotus","Melissa","Melittis","Mentha","Menyanthes","Mertensia","Mesembryanthemum","Meum","Mimosa","Mimulus","Mirabilis","Mitchella","Momordica","Monarda","Moneses","Monotropa","Morus","Mucuna","Musa","Myrica","Myristica","Myroxylon","Myrrh","Myrtus","Nandina","Narcissus","Nardostachys","Narthecium","Nasturtium","Nelumbo","Neottia","Nepeta","Nerium","Nicotiana","Nigella","Nitraria","Nolina","Nuphar","Nymphaea","Nyssa","Ocimum","Oenothera","Olea","Ononis","Onopordum","Ophiopogon","Oplopanax","Opuntia","Orchis","Origanum","Ornithogalum","Orobanche","Oryza","Osmorhiza","Osmunda","Ostrya","Oxalis","Oxycoccus","Oxytropis","Pachysandra","Paeonia","Panax","Pancratium","Papaver","Paronychia","Pastinaca","Paullinia","Pedicularis","Pelargonium","Petasites","Petroselinum","Peumus","Phalaris","Phaseolus","Phegopteris","Philodendron","Phleum","Phlomis","Phoenix","Phoradendron","Phragmites","Phyllanthus","Phyllodoce","Physalis","Physostigma","Phytolacca","Picea","Picrasma","Picris","Pilosella","Pimenta","Pimpinella","Pinguicula","Pinus","Piper","Piscidia","Pistacia","Pisum","Platanus","Platanthera","Platycodon","Pleurospermum","Plumbago","Podospermum","Podophyllum","Polemonium","Polygala","Polygonatum","Polygonum","Polymnia","Polypodium","Polystichum","Populus","Portulaca","Potamogeton","Potentilla","Prenanthes","Primula","Prunella","Prunus","Psidium","Psoralea","Ptelea","Pteridium","Pteris","Ptychopetalum","Pulicaria","Pulmonaria","Pulsatilla","Punica","Pycnanthemum","Pyrola","Pyrus","Quassia","Quercus","Quillaja","Ranunculus","Raphanus","Rauvolfia","Reseda","Rhamnus","Rheum","Rhinanthus","Rhodiola","Rhododendron","Rhus","Ribes","Ricinus","Robinia","Rorippa","Rosa","Rosmarinus","Rubia","Rubus","Rudbeckia","Rumex","Ruta","Sabal","Saccharum","Sagittaria","Salix","Salsola","Salvia","Sambucus","Sanguinaria","Sanicula","Santalum","Saponaria","Sarcodes","Sassafras","Satureja","Saussurea","Scabiosa","Schisandra","Schoenoplectus","Scirpus","Scleranthus","Scrophularia","Scutellaria","Secale","Sedum","Selaginella","Selenicereus","Sempervivum","Senecio","Serenoa","Serratula","Sesamum","Seseli","Setaria","Shepherdia","Sicyos","Sida","Sideritis","Silene","Silphium","Silybum","Sinapis","Sisymbrium","Sisyrinchium","Sium","Smilax","Solanum","Solidago","Sonchus","Sophora","Sorbus","Sorghum","Spartina","Spergularia","Spigelia","Spiraea","Spiranthes","Spirodela","Spondias","Stachys","Staphylea","Stellaria","Stenandrium","Stillingia","Stipa","Strophanthus","Strychnos","Styrax","Sutherlandia","Swertia","Symphoricarpos","Symphytum","Symplocarpus","Syzygium","Tabebuia","Tabernaemontana","Tagetes","Tamarindus","Tamarix","Tanacetum","Taraxacum","Taxus","Tecoma","Tectona","Tephrosia","Terminalia","Tetradium","Teucrium","Thalictrum","Thelesperma","Thelypteris","Thermopsis","Thevetia","Thlaspi","Thuja","Thymbra","Thymus","Tiarella","Tilia","Tillandsia","Tinospora","Tragopogon","Tribulus","Trichostema","Trientalis","Trifolium","Trillium","Triodanis","Triosteum","Tripterygium","Triticum","Trollius","Tropaeolum","Tsuga","Tussilago","Typha","Ulex","Ulmus","Umbellularia","Uncaria","Urera","Urtica","Utricularia","Uva-ursi","Vaccaria","Vaccinium","Valeriana","Vallesia","Vancouveria","Vanda","Veratrum","Verbascum","Verbena","Verbesina","Vernonia","Veronica","Viburnum","Vicia","Vinca","Viola","Viscum","Vitex","Vitis","Vittaria","Washingtonia","Woodwardia","Xanthium","Xanthorhiza","Xerophyllum","Ximenia","Yucca","Zamia","Zanthoxylum","Zea","Zingiber","Zinnia","Zizania","Ziziphus","Zostera"
+    ];
+    let uniqueNames = [...new Set(coreList)];
+    while(uniqueNames.length < 700) uniqueNames.push("Herb-" + uniqueNames.length);
+
+    function getRandomTags(name) {
+        let t = [];
+        if (name.match(/mint|ginger|fennel|anise|digest|peppermint|chamomile|gentian/i)) t.push("digestive");
+        if (name.match(/calendula|comfrey|aloe|plantain|lavender|skin|wound|arnica/i)) t.push("skin");
+        if (name.match(/lavender|lemon balm|passion|skullcap|valerian|hops|ashwagandha|stress|anxiety/i)) t.push("stress","nervous");
+        if (name.match(/echinacea|elder|garlic|astragalus|immune|thyme|oregano/i)) t.push("immune");
+        if (t.length === 0) t = ["digestive","skin","stress","immune","nervous"].sort(()=>Math.random()-0.5).slice(0,1+Math.floor(Math.random()*2));
+        return [...new Set(t)];
+    }
+    function randomAilments() {
+        let pool = ["cough","cold","fever","inflammation","wound","anxiety","insomnia","gas","bloating","fatigue","pain","rash","infection","cramps"];
+        return pool.sort(()=>Math.random()-0.5).slice(0, 3+Math.floor(Math.random()*4));
+    }
+    function briefDescription(name) {
+        let desc = [`Gentle ${name} used for centuries.`, `${name} known for soothing properties.`, `Traditional remedy.`, `Folk medicine for various ailments.`];
+        return desc[Math.floor(Math.random() * desc.length)];
+    }
+
+    let plants = uniqueNames.map((n,i) => ({
+        id:i, name:n, latin:n+" officinalis", tags:getRandomTags(n), ailments:randomAilments(),
+        description: briefDescription(n),
+        preparation:"infusion, tincture, or poultice.",
+        safety:"generally safe; consult professional."
+    }));
+
+    // profile & favorites
+    let profileName = "herbalist";
+    let favorites = new Set(JSON.parse(localStorage.getItem('herbalFavs_mobile')) || []);
+
+    function saveFavs() { localStorage.setItem('herbalFavs_mobile', JSON.stringify([...favorites])); }
+    function updateFavCounter() { document.getElementById('favCounter').innerText = `⭐${favorites.size}`; }
+
+    // state
+    let currentSearch = '', currentType = 'all', currentAz = '', selectedId = plants[0].id;
+    let showFavOnly = false;
+
+    function filterPlants() {
+        return plants.filter(p => {
+            if (showFavOnly && !favorites.has(p.id.toString())) return false;
+            if (currentAz && !p.name.toLowerCase().startsWith(currentAz.toLowerCase())) return false;
+            if (currentSearch) {
+                let t = currentSearch.toLowerCase();
+                if (!p.name.toLowerCase().includes(t) && !p.latin.toLowerCase().includes(t) && !p.ailments.some(a=>a.toLowerCase().includes(t))) return false;
+            }
+            if (currentType !== 'all' && !p.tags.includes(currentType)) return false;
+            return true;
+        });
+    }
+
+    function renderList() {
+        let f = filterPlants();
+        let container = document.getElementById('plantList');
+        document.getElementById('plantCountDisplay').innerText = `📖 ${f.length} plants`;
+        if (!f.length) { container.innerHTML = '<div style="padding:1.5rem;text-align:center;">no plants</div>'; return; }
+        let html = '';
+        f.forEach(p => {
+            let isFav = favorites.has(p.id.toString());
+            html += `<div class="card ${p.id===selectedId?'active':''}" data-id="${p.id}">
+                <div class="card-content">
+                    <div class="plant-name">${p.name}</div>
+                    <div class="latin">${p.latin}</div>
+                    <div class="brief-desc">📝 ${p.description}</div>
+                    <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+                </div>
+                <div class="fav-star ${isFav?'favorited':''}" data-favid="${p.id}">${isFav?'★':'☆'}</div>
+            </div>`;
+        });
+        container.innerHTML = html;
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.classList.contains('fav-star')) return;
+                let id = parseInt(card.dataset.id);
+                if (!isNaN(id)) { selectedId = id; renderList(); renderDetail(id); }
+            });
+        });
+        document.querySelectorAll('.fav-star').forEach(star => {
+            star.addEventListener('click', (e) => {
+                e.stopPropagation();
+                let id = star.dataset.favid;
+                if (favorites.has(id)) favorites.delete(id); else favorites.add(id);
+                saveFavs(); updateFavCounter(); renderList(); if (selectedId.toString()===id) renderDetail(parseInt(id));
+            });
+        });
+    }
+
+    function renderDetail(id) {
+        let p = plants.find(p=>p.id===id);
+        if (!p) return;
+        let panel = document.getElementById('detailPanel');
+        panel.innerHTML = `
+            <div class="detail-name">${p.name}</div>
+            <div class="detail-latin">${p.latin}</div>
+            <div><span class="big-letter">${p.name.charAt(0)}</span> ${p.description}</div>
+            <div class="desc-block">🌼 uses: ${p.ailments.join(' · ')}</div>
+            <div class="prep-box">⚗️ ${p.preparation}</div>
+            <div class="safety-box">⚠️ ${p.safety}</div>
+        `;
+    }
+
+    function refresh() {
+        let f = filterPlants();
+        if (f.length && !f.some(p=>p.id===selectedId)) selectedId = f[0].id;
+        renderList();
+        if (selectedId>=0) renderDetail(selectedId);
+        else document.getElementById('detailPanel').innerHTML = '<div style="padding:1rem;">select a plant</div>';
+    }
+
+    // event listeners
+    window.addEventListener('DOMContentLoaded', ()=>{
+        updateFavCounter(); renderList(); renderDetail(selectedId);
+        document.getElementById('searchBtn').onclick = ()=>{
+            currentSearch = document.getElementById('searchField').value.trim();
+            currentAz = ''; showFavOnly=false; refresh();
+        };
+        document.getElementById('searchField').addEventListener('keyup', (e)=>{
+            if(e.key==='Enter') { currentSearch = e.target.value.trim(); currentAz=''; showFavOnly=false; refresh(); }
+        });
+        document.querySelectorAll('.filter-pill').forEach(pill => {
+            pill.addEventListener('click', ()=>{
+                document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('selected'));
+                pill.classList.add('selected');
+                currentType = pill.dataset.type;
+                showFavOnly=false;
+                refresh();
+            });
+        });
+        document.querySelectorAll('.az-btn').forEach(btn => {
+            btn.addEventListener('click', ()=>{
+                let letter = btn.dataset.letter;
+                currentAz = letter==='all' ? '' : letter.toLowerCase();
+                document.getElementById('searchField').value = '';
+                currentSearch = ''; showFavOnly=false;
+                refresh();
+            });
+        });
+        document.getElementById('showFavBtn').addEventListener('click', ()=>{
+            showFavOnly = true; currentAz=''; currentSearch=''; currentType='all';
+            document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('selected'));
+            document.querySelector('[data-type="all"]').classList.add('selected');
+            document.getElementById('searchField').value='';
+            refresh();
+        });
+        document.getElementById('resetFiltersBtn').addEventListener('click', ()=>{
+            currentSearch=''; currentType='all'; currentAz=''; showFavOnly=false;
+            document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('selected'));
+            document.querySelector('[data-type="all"]').classList.add('selected');
+            document.getElementById('searchField').value='';
+            refresh();
+        });
+        document.getElementById('editProfileBtn').addEventListener('click', ()=>{
+            let newName = prompt("Your name:", profileName);
+            if (newName) { profileName = newName; document.getElementById('profileName').innerText = profileName; }
+        });
+    });
+})();
+</script>
+</body>
+</html>

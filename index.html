@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-    <title>📱 mobile herbal · 700+ plants · profile & favorites</title>
+    <title>📱 mega herbal · 1000+ plants · profile & favorites</title>
     <style>
         * {
             box-sizing: border-box;
@@ -19,10 +19,9 @@
             min-height: 100vh;
             padding: 0.8rem;
         }
-        /* single column, fully fluid */
         .mobile-book {
             width: 100%;
-            max-width: 700px;
+            max-width: 750px;
             background: #fcf3e1;
             border-radius: 32px 32px 24px 24px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 0 6px #775d3b, 0 0 0 10px #c8a36d;
@@ -30,7 +29,7 @@
             border: 2px solid #b48a54;
         }
 
-        /* profile header – stack on narrow screens */
+        /* profile header */
         .profile-header {
             display: flex;
             flex-wrap: wrap;
@@ -97,9 +96,10 @@
             font-size: 0.9rem;
             border: 2px solid #584c2f;
             cursor: pointer;
+            touch-action: manipulation;
         }
 
-        /* search – mobile friendly */
+        /* search */
         .search-area {
             background: #ead7b9;
             border-radius: 60px;
@@ -136,7 +136,7 @@
             flex: 1 0 auto;
         }
 
-        /* A–Z row – scrollable on small screens */
+        /* A–Z scrollable */
         .az-scroll {
             overflow-x: auto;
             white-space: nowrap;
@@ -172,7 +172,7 @@
             background: #cdb086;
         }
 
-        /* filter pills – wrap naturally */
+        /* filter pills */
         .filter-row {
             display: flex;
             flex-wrap: wrap;
@@ -200,13 +200,13 @@
             box-shadow: 0 5px 0 #174017;
         }
 
-        /* plant list – cards stack */
+        /* plant list – cards without images */
         .plant-list {
             background: #f5ead5;
             border-radius: 30px;
             padding: 1rem;
             border: 3px solid #b28d5b;
-            max-height: 400px;
+            max-height: 450px;
             overflow-y: auto;
             margin-bottom: 1.2rem;
             -webkit-overflow-scrolling: touch;
@@ -215,7 +215,7 @@
             background: #fffcf0;
             border: 3px solid #9f7a4b;
             border-radius: 30px 8px 30px 8px;
-            padding: 0.8rem 0.8rem 0.8rem 1.2rem;
+            padding: 1rem 1rem 1rem 1.5rem;
             margin-bottom: 0.8rem;
             border-left-width: 22px;
             border-left-style: solid;
@@ -234,7 +234,7 @@
         }
         .card-content {
             flex: 1;
-            min-width: 0; /* prevent overflow */
+            min-width: 0;
         }
         .plant-name {
             font-size: 1.7rem;
@@ -292,7 +292,7 @@
             text-shadow: 0 0 8px #f3b827;
         }
 
-        /* detail panel – readable on mobile */
+        /* detail panel */
         .detail-panel {
             background: #fdf2dd;
             border: 4px double #b38f57;
@@ -341,7 +341,7 @@
             box-shadow: 0 5px 0 #8b4545;
         }
 
-        /* footer – mobile row */
+        /* footer */
         .footer-row {
             display: flex;
             flex-wrap: wrap;
@@ -369,29 +369,21 @@
         .footer-row .reset-btn {
             background: #b0884b;
         }
-
-        /* count text */
         .count-text {
             font-weight: 600;
             font-size: 0.9rem;
             color: #2a422a;
-        }
-
-        /* touch-friendly adjustments */
-        button, .az-btn, .filter-pill, .fav-star, .edit-btn {
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
         }
     </style>
 </head>
 <body>
 <div class="mobile-book">
 
-    <!-- profile header – responsive -->
+    <!-- profile header -->
     <div class="profile-header">
         <div class="title-area">
             <h1>herbarium</h1>
-            <span>700+ plants</span>
+            <span>1000+ plants</span>
         </div>
         <div class="profile-card" id="profileCard">
             <div class="avatar">🌿</div>
@@ -407,7 +399,7 @@
         <button id="searchBtn">find</button>
     </div>
 
-    <!-- horizontally scrollable A–Z (mobile friendly) -->
+    <!-- A–Z scrollable -->
     <div class="az-scroll">
         <div class="az-row" id="azRow">
             <span class="az-btn all" data-letter="all">all</span>
@@ -423,7 +415,7 @@
         </div>
     </div>
 
-    <!-- filter pills (wrapping) -->
+    <!-- filter pills -->
     <div class="filter-row" id="filterRow">
         <span class="filter-pill selected" data-type="all">📋 all</span>
         <span class="filter-pill" data-type="digestive">🌿 digestive</span>
@@ -433,15 +425,15 @@
         <span class="filter-pill" data-type="nervous">⚡ nervous</span>
     </div>
 
-    <!-- plant list -->
+    <!-- plant list – simple cards -->
     <div class="plant-list" id="plantList"></div>
 
     <!-- detail panel -->
     <div class="detail-panel" id="detailPanel"></div>
 
-    <!-- footer with buttons & count -->
+    <!-- footer -->
     <div class="footer-row">
-        <span class="count-text" id="plantCountDisplay">700+ plants</span>
+        <span class="count-text" id="plantCountDisplay">1000+ plants</span>
         <button id="showFavBtn">⭐ favorites</button>
         <button class="reset-btn" id="resetFiltersBtn">reset</button>
     </div>
@@ -449,14 +441,289 @@
 
 <script>
 (function() {
-    // ---------- massive plant list (700+) ----------
+    // ---------- plant database (1000+ unique names) ----------
     const coreList = [
-        "Agrimony","Aloe","Angelica","Anise","Arnica","Ashwagandha","Astragalus","Balm","Basil","Bayberry","Beth root","Black cohosh","Black walnut","Blue cohosh","Burdock","Calendula","Cascara sagrada","Catnip","Chamomile","Cinnamon","Cleavers","Coltsfoot","Comfrey","Cramp bark","Dandelion","Echinacea","Elderberry","Elecampane","Evening primrose","Fennel","Fenugreek","Feverfew","Flaxseed","Garlic","Gentian","Ginger","Ginkgo","Ginseng","Goldenseal","Hawthorn","Hops","Horehound","Horse chestnut","Horsetail","Hyssop","Juniper","Lavender","Lemon balm","Licorice","Linden","Marshmallow","Milk thistle","Motherwort","Mullein","Nettle","Oat straw","Oregon grape","Parsley","Passionflower","Peppermint","Plantain","Red clover","Rosemary","Sage","Skullcap","St. John's Wort","Thyme","Yarrow",
-        "Acerola","Achillea","Acorus","Adonis","Agave","Alfalfa","Allspice","Althaea","Amaranth","Ambrosia","Andrographis","Anemone","Anthemis","Apium","Aralia","Arctium","Aristolochia","Artemisia","Asarum","Asclepias","Asparagus","Aster","Astilbe","Avena","Bacopa","Balsamita","Baptisia","Barberry","Belladonna","Berberis","Bergamot","Betony","Bilberry","Bistort","Blackberry","Blessed thistle","Bloodroot","Blueberry","Bogbean","Boldo","Boneset","Borage","Buchu","Buckthorn","Bugleweed","Butterbur","Cacao","Calamus","California poppy","Campion","Caraway","Cardamom","Carnation","Carob","Cascara","Catechu","Cayenne","Cedar","Celery","Centaurium","Centaury","Chaerophyllum","Chaga","Chaparral","Chaste tree","Cherokee","Cherry","Chestnut","Chickweed","Chicory","Chinese rhubarb","Chives","Chondrus","Cicely","Cilantro","Cimicifuga","Cinchona","Cistus","Citronella","Claytonia","Clematis","Cnicus","Codonopsis","Coffee","Cohosh","Coptis","Coriander","Cornflower","Corydalis","Cotton lavender","Cow parsley","Cowberry","Cowslip","Crataegus","Cudweed","Cumin","Curry plant","Cyani","Cyclamen","Cypress","Damiana","Dandelion root","Danewort","Datura","Daucus","Dead nettle","Desmodium","Dill","Dioscorea","Dipsacus","Dittany","Dock","Dog rose","Dogwood","Doronicum","Drosera","Dryopteris","Duchesnea","Dulse","Echinops","Eclipta","Elderflower","Eleuthero","Elm","Ephedra","Epilobium","Equisetum","Erica","Eriodictyon","Eryngium","Erythronium","Escallonia","Eucalyptus","Eupatorium","Euphorbia","Evernia","Eyebright","Fagopyrum","Fairy flax","Felwort","Fennel flower","Fern","Ferula","Fever root","Ficus","Filipendula","Fir","Fireweed","Fish mint","Five-leaf","Flax","Fleabane","Fo-ti","Foeniculum","Fragaria","Frangula","Frankincense","Fraxinus","Fumaria","Fumitory","Galanthus","Galega","Galeopsis","Galium","Gaultheria","Gelsemium","Genista","Gentianella","Geranium","Geum","Gillenia","Ginger root","Ginkgo leaf","Ginseng Siberian","Glechoma","Gleditsia","Globularia","Glycyrrhiza","Gnaphalium","Goat's rue","Goldenrod","Goldthread","Gossypium","Gratiola","Grindelia","Ground ivy","Groundsel","Guelder rose","Gymnema","Gynostemma","Haematoxylum","Harpagophytum","Heather","Hedera","Helenium","Helianthemum","Helianthus","Helichrysum","Hellebore","Hemerocallis","Hemlock","Hemp","Henbane","Hepatica","Heracleum","Hibiscus","Hieracium","Holarrhena","Hollyhock","Honesty","Honeysuckle","Hoodia","Hordeum","Horny goat weed","Horse gram","Horseradish","Hottonia","Hound's tongue","Houseleek","Hovenia","Humulus","Hyacinth","Hydrangea","Hydrocotyle","Hyoscyamus","Hysop","Hypericum","Hypochaeris","Iberis","Ilex","Illicium","Impatiens","Imperatoria","Inula","Ipecac","Iris","Isatis","Jaborandi","Jacob's ladder","Jambolan","Jasmin","Jateorhiza","Jatropha","Jojoba","Juglans","Juncus","Kalmia","Kava","Kigelia","Knautia","Knotweed","Kochia","Krameria","Laburnum","Lactuca","Lagenaria","Lagerstroemia","Laminaria","Lamium","Lantana","Lapsana","Larix","Laserpitium","Lathyrus","Laurel","Laurus","Lavandula","Ledum","Lemna","Leonurus","Leopard's bane","Lepidium","Leptandra","Lespedeza","Levisticum","Liatris","Ligusticum","Ligustrum","Lilium","Limonia","Linaria","Lindera","Linum","Lippia","Liquidambar","Liriodendron","Lobelia","Lolium","Lonicera","Lophophora","Lotus","Lunaria","Lupinus","Luzula","Lycium","Lycopus","Lysimachia","Lythrum","Macleaya","Macrocystis","Magnolia","Mahonia","Majorana","Malva","Mammea","Mandragora","Mangifera","Manihot","Manilkara","Maranta","Marrubium","Marsilea","Matricaria","Matteuccia","Medicago","Melaleuca","Melampyrum","Melilotus","Melissa","Melittis","Mentha","Menyanthes","Mertensia","Mesembryanthemum","Meum","Mimosa","Mimulus","Mirabilis","Mitchella","Momordica","Monarda","Moneses","Monotropa","Morus","Mucuna","Musa","Myrica","Myristica","Myroxylon","Myrrh","Myrtus","Nandina","Narcissus","Nardostachys","Narthecium","Nasturtium","Nelumbo","Neottia","Nepeta","Nerium","Nicotiana","Nigella","Nitraria","Nolina","Nuphar","Nymphaea","Nyssa","Ocimum","Oenothera","Olea","Ononis","Onopordum","Ophiopogon","Oplopanax","Opuntia","Orchis","Origanum","Ornithogalum","Orobanche","Oryza","Osmorhiza","Osmunda","Ostrya","Oxalis","Oxycoccus","Oxytropis","Pachysandra","Paeonia","Panax","Pancratium","Papaver","Paronychia","Pastinaca","Paullinia","Pedicularis","Pelargonium","Petasites","Petroselinum","Peumus","Phalaris","Phaseolus","Phegopteris","Philodendron","Phleum","Phlomis","Phoenix","Phoradendron","Phragmites","Phyllanthus","Phyllodoce","Physalis","Physostigma","Phytolacca","Picea","Picrasma","Picris","Pilosella","Pimenta","Pimpinella","Pinguicula","Pinus","Piper","Piscidia","Pistacia","Pisum","Platanus","Platanthera","Platycodon","Pleurospermum","Plumbago","Podospermum","Podophyllum","Polemonium","Polygala","Polygonatum","Polygonum","Polymnia","Polypodium","Polystichum","Populus","Portulaca","Potamogeton","Potentilla","Prenanthes","Primula","Prunella","Prunus","Psidium","Psoralea","Ptelea","Pteridium","Pteris","Ptychopetalum","Pulicaria","Pulmonaria","Pulsatilla","Punica","Pycnanthemum","Pyrola","Pyrus","Quassia","Quercus","Quillaja","Ranunculus","Raphanus","Rauvolfia","Reseda","Rhamnus","Rheum","Rhinanthus","Rhodiola","Rhododendron","Rhus","Ribes","Ricinus","Robinia","Rorippa","Rosa","Rosmarinus","Rubia","Rubus","Rudbeckia","Rumex","Ruta","Sabal","Saccharum","Sagittaria","Salix","Salsola","Salvia","Sambucus","Sanguinaria","Sanicula","Santalum","Saponaria","Sarcodes","Sassafras","Satureja","Saussurea","Scabiosa","Schisandra","Schoenoplectus","Scirpus","Scleranthus","Scrophularia","Scutellaria","Secale","Sedum","Selaginella","Selenicereus","Sempervivum","Senecio","Serenoa","Serratula","Sesamum","Seseli","Setaria","Shepherdia","Sicyos","Sida","Sideritis","Silene","Silphium","Silybum","Sinapis","Sisymbrium","Sisyrinchium","Sium","Smilax","Solanum","Solidago","Sonchus","Sophora","Sorbus","Sorghum","Spartina","Spergularia","Spigelia","Spiraea","Spiranthes","Spirodela","Spondias","Stachys","Staphylea","Stellaria","Stenandrium","Stillingia","Stipa","Strophanthus","Strychnos","Styrax","Sutherlandia","Swertia","Symphoricarpos","Symphytum","Symplocarpus","Syzygium","Tabebuia","Tabernaemontana","Tagetes","Tamarindus","Tamarix","Tanacetum","Taraxacum","Taxus","Tecoma","Tectona","Tephrosia","Terminalia","Tetradium","Teucrium","Thalictrum","Thelesperma","Thelypteris","Thermopsis","Thevetia","Thlaspi","Thuja","Thymbra","Thymus","Tiarella","Tilia","Tillandsia","Tinospora","Tragopogon","Tribulus","Trichostema","Trientalis","Trifolium","Trillium","Triodanis","Triosteum","Tripterygium","Triticum","Trollius","Tropaeolum","Tsuga","Tussilago","Typha","Ulex","Ulmus","Umbellularia","Uncaria","Urera","Urtica","Utricularia","Uva-ursi","Vaccaria","Vaccinium","Valeriana","Vallesia","Vancouveria","Vanda","Veratrum","Verbascum","Verbena","Verbesina","Vernonia","Veronica","Viburnum","Vicia","Vinca","Viola","Viscum","Vitex","Vitis","Vittaria","Washingtonia","Woodwardia","Xanthium","Xanthorhiza","Xerophyllum","Ximenia","Yucca","Zamia","Zanthoxylum","Zea","Zingiber","Zinnia","Zizania","Ziziphus","Zostera"
+        // A
+        "Abele", "Abelia", "Abies", "Abrus", "Abuta", "Abutilon", "Acacia", "Acaena", "Acalypha", "Acanthopanax",
+        "Acanthus", "Acer", "Acerola", "Achillea", "Achimenes", "Achlys", "Achras", "Acmella", "Acoelorraphe",
+        "Aconitum", "Acorus", "Actaea", "Actinidia", "Adansonia", "Adenanthera", "Adenium", "Adenocaulon",
+        "Adenophora", "Adenostoma", "Adhatoda", "Adiantum", "Adlumia", "Adonis", "Aechmea", "Aegle", "Aegopodium",
+        "Aeluropus", "Aeonium", "Aerangis", "Aesculus", "Aethusa", "Aframomum", "Afzelia", "Agapanthus", "Agastache",
+        "Agathis", "Agave", "Ageratina", "Ageratum", "Aglaia", "Aglaomorpha", "Aglaonema", "Agrimonia", "Agropyron",
+        "Agrostemma", "Agrostis", "Ailanthus", "Aira", "Aizoaceae", "Ajuga", "Akebia", "Alangium", "Albizia", "Alcea",
+        "Alchemilla", "Alectoria", "Aleurites", "Alhagi", "Alisma", "Alkanna", "Alliaria", "Allium", "Alnus", "Alocasia",
+        "Aloe", "Aloinella", "Alopecurus", "Aloysia", "Alpinia", "Alstonia", "Alternanthera", "Althaea", "Alyssum",
+        "Amaranthus", "Amaryllis", "Ambrosia", "Amelanchier", "Ammi", "Ammophila", "Amomum", "Amorpha", "Amorphophallus",
+        "Ampelopsis", "Amphicarpaea", "Amsonia", "Anacardium", "Anacyclus", "Anagallis", "Ananas", "Anaphalis",
+        "Anchusa", "Andromeda", "Andropogon", "Anemone", "Anemonella", "Anemonopsis", "Anemopsis", "Anethum",
+        "Angelica", "Angophora", "Angraecum", "Anguria", "Aniba", "Anigozanthos", "Anisomeles", "Anisum", "Annona",
+        "Anoda", "Antennaria", "Anthemis", "Anthoxanthum", "Anthriscus", "Anthurium", "Anthyllis", "Antiaris",
+        "Antidesma", "Antigonon", "Antirrhinum", "Apera", "Aphanes", "Apios", "Apium", "Apocynum", "Aporocactus",
+        "Aposeris", "Apostasia", "Aquilegia", "Arabidopsis", "Arabis", "Arachis", "Aralia", "Araucaria", "Arbutus",
+        "Archangelica", "Arctium", "Arctostaphylos", "Arctous", "Ardisia", "Areca", "Arenaria", "Arenga", "Argemone",
+        "Argentina", "Argyranthemum", "Argyreia", "Aria", "Arisaema", "Arisarum", "Aristida", "Aristotelia", "Armeria",
+        "Armoracia", "Arnica", "Arrabidaea", "Arrhenatherum", "Arrowroot", "Artemisia", "Artocarpus", "Arum", "Aruncus",
+        "Arundinaria", "Arundo", "Asarum", "Asclepias", "Asimina", "Aspalathus", "Asparagus", "Asperula", "Aspidistra",
+        "Asplenium", "Astelia", "Aster", "Astilbe", "Astragalus", "Astrantia", "Athamanta", "Athrotaxis", "Athyrium",
+        "Atractylodes", "Atriplex", "Atropa", "Aubrieta", "Aucuba", "Aurinia", "Avena", "Averrhoa", "Avicennia",
+        "Azadirachta", "Azalea", "Azolla",
+        // B
+        "Babiana", "Baccharis", "Bacopa", "Baeckea", "Balanites", "Balanophora", "Baldellia", "Ballota", "Balsamita",
+        "Bambusa", "Banisteriopsis", "Barleria", "Bassia", "Bauhinia", "Beaucarnea", "Bellis", "Berberis", "Bergenia",
+        "Beta", "Betula", "Bidens", "Bifora", "Bignonia", "Bilderdykia", "Billbergia", "Bistorta", "Bixa", "Blechnum",
+        "Blephilia", "Bletia", "Bletilla", "Bloomeria", "Boehmeria", "Boerhavia", "Boltonia", "Bombax", "Borago",
+        "Borreria", "Boswellia", "Botrychium", "Bougainvillea", "Bouteloua", "Brachyglottis", "Brachypodium",
+        "Brasenia", "Brassica", "Brickellia", "Briza", "Bromelia", "Bromus", "Brosimum", "Broussonetia", "Brugmansia",
+        "Brunfelsia", "Brunnera", "Bryonia", "Buchloe", "Buddleja", "Bupleurum", "Butia", "Butomus", "Buxus",
+        // C
+        "Cacalia", "Cactus", "Caesalpinia", "Cajanus", "Cakile", "Caladium", "Calamagrostis", "Calamus", "Calathea",
+        "Calceolaria", "Calendula", "Calla", "Callicarpa", "Callirhoe", "Callistemon", "Callitriche", "Calluna",
+        "Calocedrus", "Calochortus", "Calophyllum", "Calopogon", "Caltha", "Calycanthus", "Calystegia", "Camassia",
+        "Camelina", "Camellia", "Campanula", "Cananga", "Canavalia", "Canna", "Cannabis", "Capparis", "Caprifoliaceae",
+        "Capsella", "Capsicum", "Caragana", "Cardamine", "Cardaria", "Cardiospermum", "Carduus", "Carex", "Carlina",
+        "Carpinus", "Carthamus", "Carum", "Carya", "Caryopteris", "Cascaria", "Cassia", "Castanea", "Castilleja",
+        "Casuarina", "Catalpa", "Catananche", "Catha", "Catharanthus", "Cattleya", "Caulophyllum", "Ceanothus",
+        "Cedrela", "Cedrus", "Cela", "Celastrus", "Celosia", "Celtis", "Cenchrus", "Centaurea", "Centaurium",
+        "Centella", "Centranthus", "Cephalanthus", "Cephalocereus", "Cephalotaxus", "Cerastium", "Ceratonia",
+        "Ceratophyllum", "Cercidiphyllum", "Cercis", "Cercocarpus", "Cereus", "Cerinthe", "Cestrum", "Chaenomeles",
+        "Chaerophyllum", "Chamaecyparis", "Chamaedorea", "Chamaemelum", "Chamaenerion", "Chamerion", "Chaptalia",
+        "Chasmanthium", "Cheilanthes", "Cheiranthus", "Chelidonium", "Chelone", "Chenopodium", "Chilopsis", "Chimaphila",
+        "Chimonanthus", "Chionanthus", "Chionodoxa", "Chloris", "Chlorogalum", "Chlorophytum", "Chondrilla", "Chondrus",
+        "Chordospartium", "Chorisia", "Chrysalidocarpus", "Chrysanthemum", "Chrysobalanus", "Chrysophyllum",
+        "Chrysopsis", "Chrysosplenium", "Cibotium", "Cicer", "Cichorium", "Cicuta", "Cimicifuga", "Cinchona",
+        "Cinnamomum", "Circaea", "Cirsium", "Cissus", "Cistus", "Citrullus", "Citrus", "Cladium", "Cladrastis",
+        "Clarkia", "Claytonia", "Clematis", "Cleome", "Clerodendrum", "Clethra", "Cleyera", "Clianthus", "Clinopodium",
+        "Clintonia", "Ciltoria", "Clytostoma", "Cnidoscolus", "Coccoloba", "Cocculus", "Cochlearia", "Cocos",
+        "Codiaeum", "Codonopsis", "Coffea", "Coix", "Colchicum", "Coldenia", "Coleus", "Collinsia", "Collinsonia",
+        "Colocasia", "Colubrina", "Colutea", "Comandra", "Combretum", "Commelina", "Commiphora", "Comptonia", "Conium",
+        "Conopholis", "Conopodium", "Conringia", "Convallaria", "Convolvulus", "Conyza", "Copernicia", "Coptis",
+        "Cordia", "Coreopsis", "Coriandrum", "Corispermum", "Cornus", "Coronilla", "Corrigiola", "Cortaderia",
+        "Corydalis", "Corylus", "Corymbia", "Corynocarpus", "Coryphantha", "Cosmos", "Costus", "Cotinus", "Cotonear",
+        "Cotula", "Cotyledon", "Crambe", "Craspedia", "Crassula", "Crataegus", "Crateva", "Crepis", "Crinum",
+        "Crocosmia", "Crocus", "Crotalaria", "Croton", "Cryptantha", "Cryptomeria", "Ctenanthe", "Cucumis", "Cucurbita",
+        "Cuminum", "Cunila", "Cunninghamia", "Cuphea", "Cupressus", "Curcuma", "Cuscuta", "Cyananthus", "Cyanella",
+        "Cyathea", "Cycas", "Cycladenia", "Cyclamen", "Cyclanthera", "Cycloloma", "Cydonia", "Cymbalaria", "Cymbidium",
+        "Cymbopogon", "Cynanchum", "Cynara", "Cynodon", "Cynoglossum", "Cynosurus", "Cyperus", "Cypripedium",
+        "Cyrtomium", "Cystopteris", "Cytisus",
+        // D
+        "Daboecia", "Dacrydium", "Dactylis", "Dactyloctenium", "Dahlia", "Dalea", "Damasonium", "Daphne", "Darlingtonia",
+        "Dasiphora", "Datura", "Daucus", "Davallia", "Decumaria", "Deinandra", "Delonix", "Delphinium", "Dendranthema",
+        "Dendrobium", "Dendrocalamus", "Dentaria", "Deparia", "Deschampsia", "Descurainia", "Desmanthus", "Desmodium",
+        "Deutzia", "Dianella", "Dianthus", "Diapensia", "Dicentra", "Dichanthelium", "Dichondra", "Dichrostachys",
+        "Dicranopteris", "Dictamnus", "Dictyosperma", "Didymocarpus", "Didymopanax", "Dienia", "Digitalis", "Digitaria",
+        "Dillenia", "Diodia", "Dionaea", "Dioscorea", "Diospyros", "Dipcadi", "Diplachne", "Dipladenia", "Diplotaxis",
+        "Dipsacus", "Dipterocarpus", "Dirca", "Disocactus", "Disporum", "Distichlis", "Dodecatheon", "Dodonaea",
+        "Doellingeria", "Dolichos", "Doronicum", "Dorset", "Dorycnium", "Draba", "Dracaena", "Dracocephalum",
+        "Dracunculus", "Drimia", "Drimys", "Drosera", "Dryas", "Drymocallis", "Dryopteris", "Duchesnea", "Dudleya",
+        "Dulichium", "Duranta", "Dyckia", "Dysphania",
+        // E
+        "Ebenopsis", "Ebenus", "Eccremocarpus", "Echeandia", "Echeveria", "Echinacea", "Echinocactus", "Echinocereus",
+        "Echinodorus", "Echinops", "Echium", "Edgeworthia", "Ehretia", "Eichhornia", "Elaeagnus", "Elaeis", "Elaeocarpus",
+        "Elatine", "Eleocharis", "Eleusine", "Elodea", "Elymus", "Embothrium", "Emilia", "Endymion", "Enkianthus",
+        "Ensete", "Entada", "Epacris", "Eperua", "Ephedra", "Epilobium", "Epimedium", "Epipactis", "Epiphyllum",
+        "Equisetum", "Eragrostis", "Erechtites", "Eremochloa", "Eremophila", "Erianthus", "Erica", "Erigeron", "Erinus",
+        "Eriobotrya", "Eriocaulon", "Eriochloa", "Eriodictyon", "Eriogonum", "Eriophorum", "Eriophyllum", "Erodium",
+        "Eruca", "Erucastrum", "Eryngium", "Erysimum", "Erythrina", "Erythronium", "Eschscholzia", "Eucalyptus",
+        "Eucnide", "Eucrypta", "Eugenia", "Eulophia", "Eupatorium", "Euphorbia", "Euphrasia", "Eurybia", "Euryops",
+        "Eustoma", "Eutrochium", "Evolvulus", "Exacum", "Exochorda",
+        // F
+        "Fabiana", "Fagopyrum", "Fagus", "Fallopia", "Faramea", "Fatsia", "Ferocactus", "Ferraria", "Ferula", "Festuca",
+        "Ficus", "Filago", "Filipendula", "Fimbristylis", "Fittonia", "Fleischmannia", "Foeniculum", "Forestiera",
+        "Forsythia", "Fothergilla", "Fragaria", "Frangula", "Frankenia", "Fraxinus", "Fritillaria", "Froelichia",
+        "Fuchsia", "Fuirena", "Fumaria", "Fumana",
+        // G
+        "Gagea", "Gaillardia", "Galanthus", "Galax", "Galega", "Galeopsis", "Galinsoga", "Galium", "Galtonia",
+        "Garcinia", "Gardenia", "Garrya", "Gaultheria", "Gaura", "Gaylussacia", "Gazania", "Gelsemium", "Genipa",
+        "Genista", "Gentiana", "Gentianella", "Geocaulon", "Geranium", "Gerardia", "Geum", "Gilia", "Gillenia",
+        "Ginkgo", "Gladiolus", "Glandularia", "Glechoma", "Gleditsia", "Glinus", "Gliricidia", "Globularia", "Gloriosa",
+        "Glyceria", "Glycine", "Glycyrrhiza", "Gnaphalium", "Gomphocarpus", "Gomphrena", "Gonolobus", "Gonystylus",
+        "Gordonia", "Gossypium", "Gratiola", "Grevillea", "Grewia", "Grindelia", "Griselinia", "Guaiacum", "Guatteria",
+        "Guazuma", "Guibourtia", "Guzmania", "Gymnadenia", "Gymnema", "Gymnocladus", "Gymnopogon", "Gymnosporia",
+        "Gynandropsis", "Gynerium", "Gynostemma", "Gynura", "Gypsophila",
+        // H
+        "Haageocereus", "Habenaria", "Habranthus", "Haemanthus", "Haematoxylum", "Hakea", "Halesia", "Halimium",
+        "Halimodendron", "Halogeton", "Hamamelis", "Hamelia", "Hardenbergia", "Harpagophytum", "Harrisia", "Hedeoma",
+        "Hedera", "Helenium", "Helianthemum", "Helianthus", "Helichrysum", "Heliconia", "Helicteres", "Heliomeris",
+        "Heliopsis", "Heliotropium", "Helleborus", "Helonias", "Hemerocallis", "Hemionitis", "Hemizonia", "Hepatica",
+        "Heracleum", "Herbertia", "Hernandia", "Hesperaloe", "Hesperis", "Heteromeles", "Heterotheca", "Heuchera",
+        "Hevea", "Hibbertia", "Hibiscus", "Hieracium", "Hierochloe", "Hilaria", "Hippeastrum", "Hippocrepis",
+        "Hippomane", "Hippophae", "Hoffmannseggia", "Holcus", "Holodiscus", "Homalanthus", "Homalocladium", "Hordeum",
+        "Horkelia", "Hornungia", "Horsfieldia", "Hosta", "Hottonia", "Houstonia", "Houttuynia", "Hovenia", "Hudsonia",
+        "Hugonia", "Humulus", "Hunnemannia", "Hunteria", "Huperzia", "Hura", "Hyacinthoides", "Hyacinthus", "Hydrangea",
+        "Hydrastis", "Hydrocharis", "Hydrocotyle", "Hydrolea", "Hydrophyllum", "Hygrophila", "Hylocereus", "Hylomecon",
+        "Hylotelephium", "Hymenaea", "Hymenocallis", "Hymenopappus", "Hymenophyllum", "Hymenoxys", "Hyoscyamus",
+        "Hyparrhenia", "Hypericum", "Hypochaeris", "Hypoestes", "Hypolepis", "Hypoxis", "Hyptis", "Hyssopus",
+        // I
+        "Iberis", "Icacina", "Idesia", "Ilex", "Illicium", "Impatiens", "Imperata", "Incarvillea", "Indigofera",
+        "Inga", "Inula", "Io", "Iochroma", "Ionactis", "Ipomoea", "Ipomopsis", "Iresine", "Iris", "Isatis", "Isoetes",
+        "Isomeris", "Isopyrum", "Itea", "Iva", "Ixeris", "Ixia", "Ixiolirion", "Ixophorus", "Ixora",
+        // J
+        "Jacaranda", "Jacksonia", "Jacquemontia", "Jasione", "Jasminum", "Jatropha", "Jeffersonia", "Jepsonia",
+        "Jessea", "Juglans", "Juncus", "Jungia", "Juniperus", "Jurinea", "Justicia",
+        // K
+        "Kadsura", "Kalanchoe", "Kalimeris", "Kaliphora", "Kalistroemia", "Kalmia", "Kalopanax", "Kearnemalvastrum",
+        "Kelloggia", "Kelseya", "Kennedia", "Kentranthus", "Kerria", "Keteleeria", "Kickxia", "Kigelia", "Kiggelaria",
+        "Kirengeshoma", "Kleinhovia", "Knautia", "Kniphofia", "Kochia", "Koeleria", "Koelreuteria", "Kolkwitzia",
+        "Korthalsella", "Krameria", "Krascheninnikovia", "Krigia", "Krugiodendron", "Kuhnia", "Kummerowia", "Kunzea",
+        // L
+        "Lablab", "Laburnum", "Lachnanthes", "Lactuca", "Lagenaria", "Lagerstroemia", "Lagochilus", "Lagophylla",
+        "Lagopsis", "Laguncularia", "Lallemantia", "Lamarckia", "Lamium", "Lamourouxia", "Lampsana", "Lantana",
+        "Lapageria", "Lapeirousia", "Laportea", "Lappula", "Lapsana", "Larix", "Larrea", "Lasianthaea", "Lasiospermum",
+        "Lasthenia", "Lathraea", "Lathyrus", "Latua", "Launaea", "Laurelia", "Laurentia", "Laurus", "Lavandula",
+        "Lavatera", "Lavoisiera", "Lawsonia", "Layia", "Leandra", "Lechea", "Ledebouria", "Ledum", "Leersia", "Legousia",
+        "Leiophyllum", "Leitneria", "Lemna", "Lens", "Lentibularia", "Leonotis", "Leonurus", "Leontodon", "Leontopodium",
+        "Lepanthes", "Lepidium", "Lepidospartum", "Lepismium", "Leptarrhena", "Leptochloa", "Leptodactylon",
+        "Leptoglottis", "Leptosiphon", "Leptospermum", "Leptotes", "Lespedeza", "Lesquerella", "Lessingia", "Leucaena",
+        "Leucanthemum", "Leucanthemopsis", "Leuchtenbergia", "Leucocrinum", "Leucojum", "Leucophyllum", "Leucopoa",
+        "Leucothoe", "Levisticum", "Lewisia", "Leycesteria", "Leymus", "Liabum", "Liatris", "Licania", "Licaria",
+        "Ligeria", "Lightfootia", "Ligularia", "Ligusticum", "Ligustrum", "Lilaeopsis", "Lilium", "Limnanthes",
+        "Limnobium", "Limnocharis", "Limonium", "Linanthus", "Linaria", "Lindera", "Lindernia", "Linnaea", "Linum",
+        "Liparis", "Lipocarpha", "Liquidambar", "Liriodendron", "Liriope", "Litchi", "Lithocarpus", "Lithophragma",
+        "Lithops", "Lithospermum", "Litsea", "Littorella", "Loasa", "Lobelia", "Lobularia", "Loeselia", "Lolium",
+        "Lomandra", "Lomatium", "Lomatogonium", "Lonchocarpus", "Lonicera", "Lophanthus", "Lophiola", "Lophophora",
+        "Lophospermum", "Loranthus", "Lotus", "Ludwigia", "Luffa", "Lunaria", "Lupinus", "Luziola", "Luzula", "Lycium",
+        "Lycopersicon", "Lycopodiella", "Lycopodium", "Lycopus", "Lycoris", "Lygeum", "Lyginia", "Lygodesmia",
+        "Lygodium", "Lyonia", "Lysichiton", "Lysiloma", "Lysimachia", "Lythrum",
+        // M
+        "Maackia", "Macadamia", "Macfadyena", "Machaeranthera", "Macleania", "Macleaya", "Maclura", "Macrocystis",
+        "Macroptilium", "Macrozamia", "Madia", "Maerua", "Magnolia", "Mahonia", "Maianthemum", "Malachra", "Malacothamnus",
+        "Malacothrix", "Malaxis", "Malesherbia", "Malope", "Malpighia", "Malus", "Malva", "Malvastrum", "Malvaviscus",
+        "Mammea", "Mammillaria", "Mandevilla", "Mandragora", "Manettia", "Manfreda", "Mangifera", "Manihot", "Manilkara",
+        "Manisuris", "Mannagettaea", "Marrubium", "Marsilea", "Marsypianthes", "Martynia", "Mascagnia", "Matayba",
+        "Matelea", "Matricaria", "Matteuccia", "Matthiola", "Maxillaria", "Mayaca", "Mazus", "Mecardonia", "Meconopsis",
+        "Medeola", "Medicago", "Melaleuca", "Melampodium", "Melampyrum", "Melanthium", "Melastoma", "Melia", "Melianthus",
+        "Melica", "Melicope", "Melilotus", "Melinis", "Melissa", "Melittis", "Melocactus", "Melochia", "Melothria",
+        "Menispermum", "Mentha", "Mentzelia", "Menyanthes", "Menziesia", "Mercurialis", "Mertensia", "Merremia",
+        "Mespilus", "Metasequoia", "Metrosideros", "Miconia", "Micranthemum", "Micranthes", "Microcachrys", "Microgramma",
+        "Microlepia", "Micromeria", "Microseris", "Microstegium", "Mikania", "Mila", "Miliusa", "Millettia", "Mimosa",
+        "Mimulus", "Minuartia", "Mirabilis", "Miscanthus", "Mitchella", "Mitella", "Mitracarpus", "Mitragyna", "Mitreola",
+        "Modiola", "Moenchia", "Molinia", "Mollugo", "Momordica", "Monarda", "Monardella", "Moneses", "Monilia",
+        "Monnina", "Monochaetum", "Monodora", "Monolepis", "Monotoca", "Monotropa", "Monstera", "Montanoa", "Montia",
+        "Morella", "Moringa", "Morus", "Mostacillastrum", "Mourera", "Mucuna", "Muehlenbeckia", "Muhlenbergia",
+        "Murdannia", "Murraya", "Musa", "Muscari", "Mussaenda", "Mycelis", "Mycetia", "Myoporum", "Myosotidium",
+        "Myosotis", "Myosurus", "Myrceugenia", "Myrcia", "Myrica", "Myricaria", "Myriophyllum", "Myristica", "Myroxylon",
+        "Myrrhis", "Myrsine", "Myrtus",
+        // N
+        "Nabalus", "Najas", "Nama", "Nandina", "Narcissus", "Nardus", "Narthecium", "Nasturtium", "Nauclea", "Nectandra",
+        "Nectaroscordum", "Neillia", "Nelumbo", "Nemacladus", "Nemastylis", "Nemesia", "Nemopanthus", "Nemophila",
+        "Neobuxbaumia", "Neolloydia", "Neomammillaria", "Neoparrya", "Neottia", "Neottopteris", "Nepenthes", "Nepeta",
+        "Nephrolepis", "Nerine", "Nerium", "Nertera", "Neslia", "Neurolaena", "Nicandra", "Nicotiana", "Nidorella",
+        "Nierembergia", "Nigella", "Niphaea", "Nipponanthemum", "Nitraria", "Nivenia", "Nolina", "Nolana", "Nomocharis",
+        "Nonea", "Nothochelone", "Nothofagus", "Notholaena", "Nothoscordum", "Nuphar", "Nuttallia", "Nuttallanthus",
+        "Nuytsia", "Nyctaginia", "Nyctanthes", "Nyctocereus", "Nymphaea", "Nymphoides", "Nyssa",
+        // O
+        "Obolaria", "Ochna", "Ochroma", "Ochrosia", "Ocimum", "Oclemena", "Ocotea", "Odontites", "Oemleria", "Oenanthe",
+        "Oenothera", "Okenia", "Olax", "Oldenbergia", "Oldenlandia", "Oldfieldia", "Olea", "Oleandra", "Olneya",
+        "Olsynium", "Olympia", "Omphalodes", "Onagra", "Oncidium", "Oncoba", "Onobrychis", "Onoclea", "Ononis",
+        "Onopordum", "Onosma", "Operculina", "Ophioglossum", "Ophiopogon", "Ophrys", "Opuntia", "Orbea", "Orbexilum",
+        "Orchis", "Oreocarya", "Oreochrysum", "Oreomunnea", "Oreopanax", "Oreostemma", "Origanum", "Ornithogalum",
+        "Ornithopus", "Orobanche", "Orogenia", "Oronthium", "Orontium", "Orthilia", "Orthocarpus", "Oryza", "Oryzopsis",
+        "Osbeckia", "Osmanthus", "Osmorhiza", "Osmunda", "Osteomeles", "Ostrya", "Othake", "Othonna", "Othonnopsis",
+        "Ourisia", "Ourouparia", "Oxalis", "Oxycoccus", "Oxydendrum", "Oxylobus", "Oxypolis", "Oxytropis", "Oyedaea",
+        "Ozothamnus",
+        // P
+        "Pachira", "Pachycereus", "Pachyphragma", "Pachypodium", "Pachysandra", "Pachystachys", "Packera", "Paeonia",
+        "Palafoxia", "Palicourea", "Pallenis", "Panax", "Pancratium", "Panicum", "Papaver", "Papilionaceae", "Pappea",
+        "Parachartergus", "Paradisea", "Parapholis", "Parathelypteris", "Parietaria", "Paris", "Parkia", "Parkinsonia",
+        "Parnassia", "Paronychia", "Parosela", "Parthenium", "Parthenocissus", "Pascalia", "Paspalum", "Passiflora",
+        "Pastinaca", "Patagonula", "Patrinia", "Paulownia", "Pavonia", "Paxistima", "Pedicularis", "Pedilanthus",
+        "Pedunculata", "Peganum", "Pelargonium", "Pellaea", "Peltandra", "Peltiphyllum", "Pennisetum", "Penstemon",
+        "Pentachaeta", "Pentaclethra", "Pentaglottis", "Pentaphylloides", "Pentas", "Penthorum", "Pentstemon",
+        "Peperomia", "Peraphyllum", "Pereskia", "Pericallis", "Perilla", "Periploca", "Peristeria", "Peritoma",
+        "Perovskia", "Persea", "Persicaria", "Petasites", "Petiveria", "Petradoria", "Petrea", "Petrocallis",
+        "Petrophytum", "Petrorhagia", "Petroselinum", "Petunia", "Peucedanum", "Phacelia", "Phaeostigma", "Phaius",
+        "Phalaris", "Phanerophlebia", "Phaseolus", "Phegopteris", "Phellodendron", "Philadelphus", "Phillyrea",
+        "Philodendron", "Phlebodium", "Phleum", "Phlomis", "Phlox", "Phoebe", "Phoenix", "Phoradendron", "Photinia",
+        "Phragmites", "Phryma", "Phyla", "Phyllanthus", "Phyllodoce", "Phyllostachys", "Physalis", "Physaria",
+        "Physocarpus", "Physostegia", "Physostigma", "Phytolacca", "Picea", "Picradenia", "Picramnia", "Picrasma",
+        "Picris", "Picrothamnus", "Pilea", "Pilocarpus", "Pilophorus", "Pilosella", "Pimenta", "Pimpinella", "Pinckneya",
+        "Pinguicula", "Pinus", "Piper", "Piptatherum", "Piptochaetium", "Piscidia", "Pisonia", "Pistacia", "Pistia",
+        "Pisum", "Pithecellobium", "Pityopsis", "Plagiobothrys", "Planera", "Plantago", "Platanus", "Platanthera",
+        "Platystemon", "Plectocephalus", "Plectranthus", "Pleioblastus", "Pleopeltis", "Pleuraphis", "Pleurospermum",
+        "Pluchea", "Plumbago", "Plumeria", "Poa", "Podachaenium", "Podalyria", "Podanthus", "Podistera", "Podocarpus",
+        "Podophyllum", "Pogogyne", "Pogonia", "Pogostemon", "Polanisia", "Polaskia", "Polemonium", "Polianthes",
+        "Polycarpon", "Polygala", "Polygonatum", "Polygonella", "Polygonum", "Polymeria", "Polymnia", "Polypodium",
+        "Polypogon", "Polyscias", "Polystichum", "Poncirus", "Pontederia", "Populus", "Porophyllum", "Portulaca",
+        "Portulacaria", "Potamogeton", "Potentilla", "Poterium", "Pradosia", "Prenanthes", "Primula", "Proboscidea",
+        "Prosartes", "Prosopis", "Protium", "Prunella", "Prunus", "Psacalium", "Psathyrotes", "Psedera", "Pseudocymopterus",
+        "Pseudognaphalium", "Pseudotsuga", "Psidium", "Psilostrophe", "Psoralea", "Psoralidium", "Psychotria", "Ptelea",
+        "Pteridium", "Pteris", "Pterocarya", "Pterocaulon", "Pterospora", "Pteryxia", "Ptilimnium", "Puccinellia",
+        "Pulicaria", "Pulmonaria", "Pulsatilla", "Punica", "Purshia", "Pycnanthemum", "Pyrola", "Pyrrhopappus", "Pyrus",
+        // Q
+        "Quassia", "Quercus", "Quincula", "Quisqualis",
+        // R
+        "Randia", "Ranunculus", "Raphanus", "Raphia", "Rathbida", "Ratibida", "Rauvolfia", "Rehmannia", "Reichardia",
+        "Reseda", "Rhamnus", "Rhapidophyllum", "Rhapis", "Rheum", "Rhinanthus", "Rhodiola", "Rhododendron", "Rhodotypos",
+        "Rhoicissus", "Rhopalostylis", "Rhus", "Rhynchelytrum", "Rhynchosia", "Rhynchospora", "Ribes", "Ricinus",
+        "Rivina", "Robinia", "Roldana", "Rorippa", "Rosa", "Rosmarinus", "Rostraria", "Rotala", "Rothia", "Rottboellia",
+        "Rubia", "Rubus", "Rudbeckia", "Ruellia", "Rumex", "Rumohra", "Ruppia", "Ruscus", "Ruta",
+        // S
+        "Sabadilla", "Sabal", "Sabatia", "Sabina", "Saccharum", "Sacciolepis", "Sageretia", "Sagina", "Sagittaria",
+        "Saintpaulia", "Salazaria", "Salicornia", "Salix", "Salsola", "Salvia", "Salvinia", "Sambucus", "Samolus",
+        "Samyda", "Sanguinaria", "Sanguisorba", "Sanicula", "Sansevieria", "Santalum", "Santolina", "Sapindus",
+        "Sapium", "Saponaria", "Sarcobatus", "Sarcodes", "Sarcostemma", "Sarracenia", "Sassafras", "Satureja",
+        "Saururus", "Saxifraga", "Scabiosa", "Scaevola", "Schefflera", "Schinus", "Schisandra", "Schizachyrium",
+        "Schizanthus", "Schizolobium", "Schizostylis", "Schoenoplectus", "Schoenus", "Scirpus", "Scleranthus",
+        "Sclerocactus", "Scleria", "Scolymus", "Scorzonera", "Scrophularia", "Scutellaria", "Secale", "Securigera",
+        "Sedum", "Selaginella", "Selenicereus", "Semecarpus", "Sempervivum", "Senecio", "Senna", "Sequoia",
+        "Sequoiadendron", "Serenoa", "Sericocarpus", "Serjania", "Sesamum", "Sesbania", "Seseli", "Sesleria", "Setaria",
+        "Shepherdia", "Sherardia", "Shibataea", "Shortia", "Sibara", "Sibbaldia", "Sidalcea", "Sideritis", "Sideroxylon",
+        "Siegesbeckia", "Silene", "Silphium", "Silybum", "Simmondsia", "Sinapis", "Sisymbrium", "Sisyrinchium", "Sium",
+        "Skimmia", "Smelowskia", "Smilacina", "Smilax", "Smyrnium", "Solanum", "Soleirolia", "Solidago", "Soliva",
+        "Sonchus", "Sonerila", "Sophora", "Sorbaria", "Sorbus", "Sorghastrum", "Sorghum", "Sparaxis", "Sparganium",
+        "Spartina", "Spartium", "Spathiphyllum", "Spathodea", "Spergula", "Spergularia", "Sphaeralcea", "Sphaeromeria",
+        "Sphagnum", "Sphenopholis", "Spigelia", "Spiraea", "Spiranthes", "Spirodela", "Spondias", "Sporobolus", "Stachys",
+        "Stachytarpheta", "Staphylea", "Stellaria", "Stenandrium", "Stenanthium", "Stenocereus", "Stenotus",
+        "Stephanomeria", "Sterculia", "Stevia", "Stewartia", "Sticherus", "Sticta", "Stictocardia", "Stigmaphyllon",
+        "Stillingia", "Stipa", "Stokesia", "Stratiotes", "Streptanthus", "Streptocarpus", "Streptopus", "Striga",
+        "Strobilanthes", "Stromanthe", "Strophanthus", "Strychnos", "Stuartia", "Stylisma", "Stylophorum", "Styrax",
+        "Suaeda", "Sutherlandia", "Swainsona", "Swertia", "Symphoricarpos", "Symphyotrichum", "Symphytum", "Symplocarpus",
+        "Symplocos", "Syncarpha", "Synedrella", "Synellesis", "Synthyris", "Syringa", "Syzygium",
+        // T
+        "Tabebuia", "Tabernaemontana", "Tacca", "Tachia", "Tagetes", "Taiwania", "Talauma", "Talinum", "Tamarix",
+        "Tanacetum", "Taraxacum", "Tarchonanthus", "Taxodium", "Taxus", "Tecoma", "Tectaria", "Tectona", "Tephrosia",
+        "Teramnus", "Terminalia", "Ternstroemia", "Tetradymia", "Tetragonotheca", "Tetraneuris", "Tetrapanax", "Teucrium",
+        "Thalictrum", "Thamnosma", "Thaspium", "Thelesperma", "Thelypodiopsis", "Thelypodium", "Thelypteris", "Thermopsis",
+        "Thespesia", "Thevetia", "Thinopyrum", "Thlaspi", "Thuja", "Thunbergia", "Thymbra", "Thymophylla", "Thymus",
+        "Tiarella", "Tibouchina", "Tidestromia", "Tigridia", "Tillandsia", "Tilia", "Timmia", "Tinantia", "Tinospora",
+        "Tipuana", "Tithonia", "Tofieldia", "Tolmiea", "Tolpis", "Tontelea", "Townsendia", "Toxicodendron", "Toxicoscordion",
+        "Trachelium", "Trachelospermum", "Trachycarpus", "Trachymene", "Tradescantia", "Tragia", "Tragopogon", "Trapa",
+        "Trematolobelia", "Trevesia", "Triadenum", "Triantha", "Tribulus", "Trichilia", "Trichocereus", "Trichodesma",
+        "Trichomanes", "Trichophorum", "Trichostema", "Tricyrtis", "Trientalis", "Trifolium", "Triglochin", "Trigonella",
+        "Trillium", "Triodanis", "Triolena", "Triosteum", "Triphasia", "Triplasis", "Tripsacum", "Tripterygium", "Trisetum",
+        "Triteleia", "Triteleiopsis", "Triticum", "Trollius", "Tropaeolum", "Tsuga", "Tuberaria", "Tulbaghia", "Tulipa",
+        "Turbina", "Turnera", "Turricula", "Tussilago", "Typha",
+        // U
+        "Uapaca", "Ulex", "Ulmus", "Umbellularia", "Umbilicus", "Uncaria", "Uniola", "Urera", "Urochloa", "Ursinia",
+        "Urtica", "Utricularia", "Uvularia",
+        // V
+        "Vaccaria", "Vaccinium", "Valeriana", "Valerianella", "Vallaris", "Vallisneria", "Vanilla", "Vanzijlia",
+        "Vancouveria", "Vanda", "Veratrum", "Verbascum", "Verbena", "Verbesina", "Vernicia", "Vernonia", "Veronica",
+        "Veronicastrum", "Vesalea", "Viburnum", "Vicia", "Victoria", "Vigna", "Vinca", "Vincetoxicum", "Viola", "Viscum",
+        "Vitex", "Vitis", "Vittaria", "Viviania", "Volkameria",
+        // W
+        "Wahlenbergia", "Waldsteinia", "Wallenia", "Washingtonia", "Watsonia", "Wedelia", "Weigela", "Weinmannia",
+        "Welwitschia", "Wendia", "Werneria", "Westringia", "Wetmorea", "Wigandia", "Wikstroemia", "Wilkesia", "Willardia",
+        "Willkommia", "Willughbeia", "Wintera", "Winterana", "Wisteria", "Withania", "Wittrockia", "Woodsia", "Woodwardia",
+        "Woolly", "Wulfenia", "Wulfeniopsis",
+        // X
+        "Xanthisma", "Xanthium", "Xanthoceras", "Xanthorhiza", "Xanthorrhoea", "Xanthosoma", "Xanthostemon", "Xeranthemum",
+        "Xerophyllum", "Ximenia", "Xiphidium", "Xylobium", "Xylococcus", "Xylomelum", "Xylopia", "Xylosma", "Xyris",
+        // Y
+        "Yermo", "Youngia", "Yucca",
+        // Z
+        "Zaluzania", "Zamia", "Zantedeschia", "Zanthoxylum", "Zea", "Zebrina", "Zelkova", "Zephyranthes", "Zigadenus",
+        "Zingiber", "Zinnia", "Zizania", "Zizaniopsis", "Ziziphus", "Zizia", "Zostera", "Zoysia", "Zuccagnia", "Zygadenus",
+        "Zygia", "Zygophyllum", "Zygosicyos", "Zygotritonia"
     ];
+    
     let uniqueNames = [...new Set(coreList)];
-    while(uniqueNames.length < 700) uniqueNames.push("Herb-" + uniqueNames.length);
+    // Ensure we have at least 1000 plants
+    while(uniqueNames.length < 1000) {
+        uniqueNames.push("Herb-" + (uniqueNames.length + 1));
+    }
 
+    // plant generator
     function getRandomTags(name) {
         let t = [];
         if (name.match(/mint|ginger|fennel|anise|digest|peppermint|chamomile|gentian/i)) t.push("digestive");
@@ -476,20 +743,20 @@
     }
 
     let plants = uniqueNames.map((n,i) => ({
-        id:i, name:n, latin:n+" officinalis", tags:getRandomTags(n), ailments:randomAilments(),
+        id:i, name:n, latin:n.toLowerCase().replace(/\s+/g, '') + " officinalis", 
+        tags:getRandomTags(n), ailments:randomAilments(),
         description: briefDescription(n),
         preparation:"infusion, tincture, or poultice.",
         safety:"generally safe; consult professional."
     }));
 
-    // profile & favorites
+    // ---------- profile & favorites ----------
     let profileName = "herbalist";
-    let favorites = new Set(JSON.parse(localStorage.getItem('herbalFavs_mobile')) || []);
-
-    function saveFavs() { localStorage.setItem('herbalFavs_mobile', JSON.stringify([...favorites])); }
+    let favorites = new Set(JSON.parse(localStorage.getItem('herbalFavs_1000')) || []);
+    function saveFavs() { localStorage.setItem('herbalFavs_1000', JSON.stringify([...favorites])); }
     function updateFavCounter() { document.getElementById('favCounter').innerText = `⭐${favorites.size}`; }
 
-    // state
+    // ---------- state ----------
     let currentSearch = '', currentType = 'all', currentAz = '', selectedId = plants[0].id;
     let showFavOnly = false;
 
@@ -510,7 +777,12 @@
         let f = filterPlants();
         let container = document.getElementById('plantList');
         document.getElementById('plantCountDisplay').innerText = `📖 ${f.length} plants`;
-        if (!f.length) { container.innerHTML = '<div style="padding:1.5rem;text-align:center;">no plants</div>'; return; }
+        
+        if (!f.length) { 
+            container.innerHTML = '<div style="padding:1.5rem;text-align:center;">no plants</div>'; 
+            return; 
+        }
+        
         let html = '';
         f.forEach(p => {
             let isFav = favorites.has(p.id.toString());
@@ -525,19 +797,29 @@
             </div>`;
         });
         container.innerHTML = html;
+
+        // Attach event listeners
         document.querySelectorAll('.card').forEach(card => {
             card.addEventListener('click', (e) => {
                 if (e.target.classList.contains('fav-star')) return;
                 let id = parseInt(card.dataset.id);
-                if (!isNaN(id)) { selectedId = id; renderList(); renderDetail(id); }
+                if (!isNaN(id)) { 
+                    selectedId = id; 
+                    renderList(); 
+                    renderDetail(id); 
+                }
             });
         });
+        
         document.querySelectorAll('.fav-star').forEach(star => {
             star.addEventListener('click', (e) => {
                 e.stopPropagation();
                 let id = star.dataset.favid;
                 if (favorites.has(id)) favorites.delete(id); else favorites.add(id);
-                saveFavs(); updateFavCounter(); renderList(); if (selectedId.toString()===id) renderDetail(parseInt(id));
+                saveFavs(); 
+                updateFavCounter(); 
+                renderList(); 
+                if (selectedId.toString()===id) renderDetail(parseInt(id));
             });
         });
     }
@@ -564,16 +846,25 @@
         else document.getElementById('detailPanel').innerHTML = '<div style="padding:1rem;">select a plant</div>';
     }
 
-    // event listeners
+    // ---------- event listeners ----------
     window.addEventListener('DOMContentLoaded', ()=>{
-        updateFavCounter(); renderList(); renderDetail(selectedId);
+        updateFavCounter(); 
+        renderList(); 
+        renderDetail(selectedId);
+        
         document.getElementById('searchBtn').onclick = ()=>{
             currentSearch = document.getElementById('searchField').value.trim();
             currentAz = ''; showFavOnly=false; refresh();
         };
         document.getElementById('searchField').addEventListener('keyup', (e)=>{
-            if(e.key==='Enter') { currentSearch = e.target.value.trim(); currentAz=''; showFavOnly=false; refresh(); }
+            if(e.key==='Enter') { 
+                currentSearch = e.target.value.trim(); 
+                currentAz=''; 
+                showFavOnly=false; 
+                refresh(); 
+            }
         });
+        
         document.querySelectorAll('.filter-pill').forEach(pill => {
             pill.addEventListener('click', ()=>{
                 document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('selected'));
@@ -583,32 +874,46 @@
                 refresh();
             });
         });
+        
         document.querySelectorAll('.az-btn').forEach(btn => {
             btn.addEventListener('click', ()=>{
                 let letter = btn.dataset.letter;
                 currentAz = letter==='all' ? '' : letter.toLowerCase();
                 document.getElementById('searchField').value = '';
-                currentSearch = ''; showFavOnly=false;
+                currentSearch = ''; 
+                showFavOnly=false;
                 refresh();
             });
         });
+        
         document.getElementById('showFavBtn').addEventListener('click', ()=>{
-            showFavOnly = true; currentAz=''; currentSearch=''; currentType='all';
+            showFavOnly = true; 
+            currentAz=''; 
+            currentSearch=''; 
+            currentType='all';
             document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('selected'));
             document.querySelector('[data-type="all"]').classList.add('selected');
             document.getElementById('searchField').value='';
             refresh();
         });
+        
         document.getElementById('resetFiltersBtn').addEventListener('click', ()=>{
-            currentSearch=''; currentType='all'; currentAz=''; showFavOnly=false;
+            currentSearch=''; 
+            currentType='all'; 
+            currentAz=''; 
+            showFavOnly=false;
             document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('selected'));
             document.querySelector('[data-type="all"]').classList.add('selected');
             document.getElementById('searchField').value='';
             refresh();
         });
+        
         document.getElementById('editProfileBtn').addEventListener('click', ()=>{
             let newName = prompt("Your name:", profileName);
-            if (newName) { profileName = newName; document.getElementById('profileName').innerText = profileName; }
+            if (newName) { 
+                profileName = newName; 
+                document.getElementById('profileName').innerText = profileName; 
+            }
         });
     });
 })();
